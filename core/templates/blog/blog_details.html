@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+
+{% block title %}
+    {{ blog.title }}
+{% endblock %}
+
+{% block content %}
+
+    <h1> {{ blog.title | title }} </h1>
+    <h4> {{ blog.author | title }} | {{ blog.date_created| timesince }} ago   </h4><br>
+    {% if blog.blog_image %}
+        <img src="{{ blog.blog_image.url }}" > <br>
+    {% else %}{% endif %}
+    <p>{{ blog.body }} </p><br>
+    <h2>Comments...</h2><hr>
+
+    {% if not blog.blog_comment.all %}
+        <p>No Comments Yet...</p>
+    {% else %}
+        {% for comment in blog.blog_comment.all %}
+            <strong>{{ comment.user | title }} </strong><br>
+            <small>{{ comment.date_commented | timesince }} ago </small>
+           <br>
+            <p>{{ comment }}</p><br><br>
+        {% endfor %}
+
+    {% endif %}
+    <a href="{% url 'comment' blog.id %}">Add Comment </a>
+        <hr>
+    {% if user == blog.author and user.is_staff %}
+        <br><br><a href="{% url 'blog_update' blog.id %}">Update Blog</a><br><br>
+        <form action="{% url 'blog_delete' blog.id %}" method="post">
+            {% csrf_token %}
+            <input type="submit" value="Delete">
+        </form>
+
+    {% endif %}
+{% endblock %}
