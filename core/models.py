@@ -19,4 +19,5 @@ class Comment(models.Model):
     comment = models.TextField(max_length=500)
 
     def __str__(self):
+
         return self.comment

@@ -69,17 +69,21 @@ def blog_create(request):
     return render(request, 'blog/blog_create.html', context)
 
 def comment(request,pk):
-    blog = get_object_or_404(Blog, id=pk)
-    form = CommentForm(instance=blog)
+    form = CommentForm
     user = request.user
-
+    blog = get_object_or_404(Blog, id=pk)
     if request.method == 'POST':
-        form = CommentForm(request.POST, instance=blog)
+        form = CommentForm(request.POST)
         if form.is_valid():
             form.instance.user = user
-            print(form.instance.user)
+            form.instance.blog = blog
             form.save()
-            return redirect('blogs')
+            print(form)
+            user_id = str(pk)
+            print(user_id)
+            return redirect('blog/'+ user_id +'/details')
+        else:
+            print('hello world')
     context = {
         'blog':blog,
         'form': form,
