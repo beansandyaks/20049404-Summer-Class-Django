@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block title %}
+Blog | Read
+{% endblock %}}
+
+{% block content %}
+{% if not blogs %}
+<h1>No Blogs</h1>
+
+{% else %}
+    {% for blog in blogs %}
+        <a style ="text-decoration: none; color:black; font-size:36px"  href="{% url 'blog_details' blog.id %}">{{ blog.title | title}}</a>
+        <h5>{{ blog.date_created }}</h5>
+        <p>{{ blog.body | truncatewords:20 }}</p><br><br><br><br>
+    {% endfor %}
+{% endif %}
+<br><br>
+
+{% if user.is_staff %}
+    <a href="{% url 'blog_create' %}">Create Blog </a>
+{% endif %}
+
+{% endblock %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login</title>
+</head>
+<body>
+<form action="{% url 'login' %}" method="POST">
+    {% csrf_token %}
+        <label for="username">Username:</label> <input type="text" name="username">
+        <br><br>
+        <label for="pass">Password:</label><input type="password" name="pass"><br><br>
+        {% if error %}
+                        <div>
+                            <span style="color:red">Username or Password didn't match</span>
+                        </div>
+        {% endif %}
+    <input type="submit" value="Login">
+</form>
+</body>
+</html>
